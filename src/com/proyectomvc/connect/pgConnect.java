@@ -28,6 +28,6 @@ public class pgConnect {
         Connection conex = DriverManager.getConnection(cadena,user,pass);
         return conex;
     }
-    
-    
+ 
+  
 }

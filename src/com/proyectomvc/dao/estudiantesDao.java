@@ -5,7 +5,7 @@
  */
 package com.proyectomvc.dao;
 
-import com.proyectomcv.model.estudiantesModel;
+import com.proyectomvc.model.estudiantesModel;
 import com.proyectomvc.connect.pgConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -50,6 +50,19 @@ public class estudiantesDao {
 
         return listaEstudiantes;
 }
+    
+        public static String[][] getEstudiantesToTable(){
+             List<estudiantesModel> listaEstudiantes = getEstudiantes();
+             String ArrayTable[][]= new String [listaEstudiantes.size()][3];
+             for(int i=0; i< listaEstudiantes.size();i++ ){
+                 
+                ArrayTable[i][0]=String.valueOf(listaEstudiantes.get(i).getIdestudiante());
+                ArrayTable[i][1]=listaEstudiantes.get(i).getNombre();                
+                ArrayTable[i][2]=String.valueOf(listaEstudiantes.get(i).getNota());
+              }
+             return ArrayTable;
+      
+        }
      public static void setEstudiantes(estudiantesModel estudiante){
                 // TODO code application logic here
 
@@ -57,11 +70,15 @@ public class estudiantesDao {
                   pgConnect connectPG = new pgConnect();
                   Connection conex=connectPG.settingConnect();
                   java.sql.Statement st = conex.createStatement();  
-  
-                  String sql ="INSERT INTO public.estudiantes( idestudiante, nombre, nota)	VALUES ("+estudiante.getIdestudiante()+", '"+estudiante.getNombre()+"', "+estudiante.getNota()+")";
+                  
+                  //ojo con el tipo de datos
+                  //idestudiante es entero
+                  //nombre es String
+                  //nota es entero7
+                  //"INSERT INTO estudiantes (idestudiante, nombre, nota) VALUES (10,'Helder',3)"
+                  String sql ="INSERT INTO estudiantes( idestudiante, nombre, nota)	VALUES ("+estudiante.getIdestudiante()+", '"+estudiante.getNombre()+"', "+estudiante.getNota()+")";
                   System.out.println(sql);
-                  ResultSet result = st.executeQuery(sql);
-                  result.close();
+                  st.executeUpdate(sql);
                   st.close();
                   conex.close();
               } catch(ClassNotFoundException | SQLException exc) {
